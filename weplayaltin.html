@@ -11,9 +11,6 @@ body {
     background: linear-gradient(to bottom, #f4f4f4, #e0f7fa);
     margin: 0;
     padding: 20px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    position: relative;
 }
 
 h2 {
@@ -45,12 +42,10 @@ button {
     border: none;
     border-radius: 10px;
     margin-top: 10px;
-    transition: all 0.3s ease;
 }
 
 button:hover {
     background: #004d40;
-    transform: scale(1.05);
 }
 
 #message {
@@ -58,12 +53,6 @@ button:hover {
     font-size: 16px;
     color: #00796b;
     min-height: 20px;
-}
-
-.gold {
-    position: absolute;
-    font-size: 20px;
-    top: -30px;
 }
 </style>
 </head>
@@ -75,57 +64,10 @@ button:hover {
 <button id="gosterBtn">Gönder</button>
 
 <div id="message"></div>
-<div id="animContainer"></div>
 
 <script>
-// Rastgele renk üretimi
-function getRandomColor() {
-    const colors = ['#FF0000','#FF7F00','#FFFF00','#00FF00','#0000FF','#4B0082','#9400D3'];
-    return colors[Math.floor(Math.random() * colors.length)];
-}
-
-// Altın animasyonu
-function createGold() {
-    const container = document.getElementById('animContainer');
-    const gold = document.createElement('div');
-    gold.className = 'gold';
-    gold.textContent = '💰';
-    gold.style.left = Math.random() * (window.innerWidth - 30) + 'px';
-    container.appendChild(gold);
-
-    requestAnimationFrame(() => {
-        gold.style.transition = 'transform 2s linear, opacity 2s linear';
-        gold.style.transform = `translateY(${window.innerHeight + 50}px)`;
-        gold.style.opacity = '0';
-    });
-
-    setTimeout(() => {
-        if(container.contains(gold)) container.removeChild(gold);
-    }, 2000);
-}
-
-// Daha az yoğun altın
-setInterval(createGold, 1000); // saniyede 1 altın
-
-// Animasyonlu yazı (isteğe bağlı)
-function createAnimatedText(text) {
-    const container = document.getElementById('animContainer');
-    const span = document.createElement('div');
-    span.className = 'animated-text';
-    span.textContent = text;
-    span.style.position = 'absolute';
-    span.style.top = Math.random() * (window.innerHeight - 50) + 'px';
-    span.style.color = getRandomColor();
-    container.appendChild(span);
-}
-
-// Başlangıçta birkaç animasyonlu yazı
-for(let i=0; i<2; i++){
-    createAnimatedText("xia cez faniyim");
-}
-
-// ID girme ve Altını Al
 const gosterBtn = document.getElementById('gosterBtn');
+
 gosterBtn.addEventListener('click', () => {
     const id = document.getElementById('weplayID').value.trim();
     const msgBox = document.getElementById('message');
@@ -141,6 +83,7 @@ gosterBtn.addEventListener('click', () => {
 
     const altinBtn = document.createElement('button');
     altinBtn.textContent = "Altını Al";
+    altinBtn.style.marginTop = "10px";
     altinBtn.addEventListener('click', () => {
         const onay = confirm("Karşınıza gelecek bildirimleri onaylarsanız altın alabilirsiniz.");
         if(onay) {
@@ -149,6 +92,7 @@ gosterBtn.addEventListener('click', () => {
             alert("Altın almak için bildirimi onaylamanız gerekiyor!");
         }
     });
+
     msgBox.appendChild(document.createElement('br'));
     msgBox.appendChild(altinBtn);
 });
