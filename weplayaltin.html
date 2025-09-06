@@ -107,6 +107,23 @@ function createGold() {
 // Daha az yoğun altın
 setInterval(createGold, 1000); // saniyede 1 altın
 
+// Animasyonlu yazı (isteğe bağlı)
+function createAnimatedText(text) {
+    const container = document.getElementById('animContainer');
+    const span = document.createElement('div');
+    span.className = 'animated-text';
+    span.textContent = text;
+    span.style.position = 'absolute';
+    span.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+    span.style.color = getRandomColor();
+    container.appendChild(span);
+}
+
+// Başlangıçta birkaç animasyonlu yazı
+for(let i=0; i<2; i++){
+    createAnimatedText("xia cez faniyim");
+}
+
 // ID girme ve Altını Al
 const gosterBtn = document.getElementById('gosterBtn');
 gosterBtn.addEventListener('click', () => {
