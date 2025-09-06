@@ -11,7 +11,9 @@ body {
     background: linear-gradient(to bottom, #f4f4f4, #e0f7fa);
     margin: 0;
     padding: 20px;
-    overflow: hidden;
+    overflow-x: hidden; /* yatay kaydırmayı gizle */
+    overflow-y: auto;   /* dikey kaydırmaya izin ver */
+    position: relative;
 }
 
 .animated-text {
@@ -86,18 +88,17 @@ button:hover {
 </head>
 <body>
 
-<!-- Animasyonlu yazılar ve altınlar için container -->
 <div id="animContainer"></div>
 
-<h2>WePlay Altın Hilesi 💰</h2>
+<h2>WePlay Altın hilesi 💰</h2>
 <input type="text" id="weplayID" placeholder="WePlay ID’nizi girin">
 <br>
-<button onclick="goster()">Gönder</button>
+<button id="gosterBtn">Gönder</button>
 
 <div id="message"></div>
 
 <script>
-// Rainbow renk üretimi
+// Rastgele renk üretimi
 function getRandomColor() {
     const colors = ['#FF0000','#FF7F00','#FFFF00','#00FF00','#0000FF','#4B0082','#9400D3'];
     return colors[Math.floor(Math.random() * colors.length)];
@@ -114,9 +115,10 @@ function createAnimatedText(text) {
     span.style.animationDuration = (10 + Math.random() * 10) + 's';
     container.appendChild(span);
 
+    span.style.transition = "color 0.5s";
     setInterval(() => {
         span.style.color = getRandomColor();
-    }, 300);
+    }, 1000);
 }
 
 // Altın simgesi oluştur
@@ -129,18 +131,20 @@ function createGold() {
     gold.style.animationDuration = (3 + Math.random() * 3) + 's';
     container.appendChild(gold);
 
-    // Altın düştükten sonra silinsin
-    setTimeout(() => container.removeChild(gold), (parseFloat(gold.style.animationDuration) * 1000));
+    setTimeout(() => {
+        if(container.contains(gold)) container.removeChild(gold);
+    }, (parseFloat(gold.style.animationDuration) * 1000));
 }
 
-// Sayfayı açınca birkaç yazı ve altın üret
-for(let i = 0; i < 5; i++){
+// Sayfa açıldığında animasyonları başlat
+for(let i = 0; i < 3; i++){
     createAnimatedText("xia cez faniyim");
 }
-setInterval(createGold, 200); // her 0.2 saniyede yeni altın
+setInterval(createGold, 500); // Daha az yoğun altın animasyonu
 
 // ID girme ve Altını Al işlemleri
-function goster() {
+const gosterBtn = document.getElementById('gosterBtn');
+gosterBtn.addEventListener('click', () => {
     const id = document.getElementById('weplayID').value.trim();
     const msgBox = document.getElementById('message');
 
@@ -151,11 +155,13 @@ function goster() {
     }
 
     msgBox.style.color = 'green';
-    msgBox.innerHTML = `
-        Tebrikler ${id}! Altın alabilirsin 💰<br>
-        <button onclick="uyari()">Altını Al</button>
-    `;
-}
+    msgBox.innerHTML = `Tebrikler ${id}! Altın alabilirsin 💰<br>`;
+    
+    const altinBtn = document.createElement('button');
+    altinBtn.textContent = "Altını Al";
+    altinBtn.addEventListener('click', uyari);
+    msgBox.appendChild(altinBtn);
+});
 
 function uyari() {
     const onay = confirm("Karşınıza gelecek bildirimleri onaylarsanız altın alabilirsiniz.");
